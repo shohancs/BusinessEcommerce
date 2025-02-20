@@ -47,7 +47,7 @@
 					</a>
 					<ul>
 						<li> <a href="category.php?do=Manage"><i class="bx bx-right-arrow-alt"></i>All Category</a>
-						<li> <a href="app-chat-box.html"><i class="bx bx-right-arrow-alt"></i>Add</a>
+						<li> <a href="category.php?do=Add"><i class="bx bx-right-arrow-alt"></i>Add</a>
 						</li>
 						<li> <a href="app-chat-box.html"><i class="bx bx-right-arrow-alt"></i>Trash</a>
 						</li>
