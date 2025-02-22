@@ -342,7 +342,7 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<h5 class="mb-0">All Category Lists</h5>
+										<h5 class="mb-0">All Category Trash Lists</h5>
 									</div>
 								</div>
 
@@ -364,7 +364,7 @@
 									  </thead>
 									  <tbody>
 									  	<?php  
-									  		$sql = "SELECT * FROM category WHERE status=1 ORDER BY id ASC";
+									  		$sql = "SELECT * FROM category WHERE status=0 ORDER BY id ASC";
 									  		$query = mysqli_query($db, $sql);
 									  		$count = mysqli_num_rows($query);
 
@@ -403,20 +403,20 @@
 													  <td>
 													  	<div class="d-flex justify-content-center">
 													  		<a href="category.php?do=Edit&Id=<?php echo $id; ?>" class="btn btn-success btn-sm me-3">Edit</a>
-													  		<a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#trush<?php echo $id; ?>">Trash</a>
+													  		<a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#del<?php echo $id; ?>">Trash</a>
 													  	</div>
 													  </td>
 													  <!-- Modal Start -->
-													  <div class="modal fade" id="trush<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													  <div class="modal fade" id="del<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 														  <div class="modal-dialog">
 														    <div class="modal-content">
 														      <div class="modal-header">
-														        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure <strong class="text-danger"><?php echo $name; ?></strong>  Move Trash !</h1>
+														        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure <strong class="text-danger"><?php echo $name; ?></strong>  Delete !</h1>
 														        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 														      </div>
 														      <div class="modal-body">
 														        <div class="modal-footer justify-content-center">
-																	<a href="category.php?do=Trash&tData=<?php echo $id; ?>" class="btn btn-primary">Yes</a>
+																	<a href="category.php?do=Delete&dData=<?php echo $id; ?>" class="btn btn-primary">Yes</a>
 																	<a href="" class="btn btn-dark" data-bs-dismiss="modal">No</a>		      	
 														        </div>
 														      </div>
@@ -445,13 +445,13 @@
 
 
 					else if ( $do == "Delete" ) {
-						if ( isset($_GET['tData']) ) {
-							$trashId = $_GET['tData'];
-							$sql = "UPDATE category SET status = 0 WHERE id='$trashId'";
+						if ( isset($_GET['dData']) ) {
+							$delId = $_GET['dData'];
+							$sql = "DELETE FROM category WHERE id='$delId'";
 							$query = mysqli_query($db, $sql);
 
 							if ( $query ) {
-								header("Location: category.php?do=Manage");
+								header("Location: category.php?do=ManageTrash");
 							}
 							else {
 								die("Mysql Error." . mysqli_error($db));
