@@ -229,7 +229,7 @@
 
 													<div class="mb-3">
 														<div class="d-grid gap-2">
-															<input type="text" name="upId" value="<?php echo $id; ?>">
+															<input type="hidden" name="upId" value="<?php echo $id; ?>">
 															<input type="submit" name="updateCat" class="btn btn-dark" value="Update Category">
 														</div>
 													</div>
@@ -247,10 +247,10 @@
 					}
 
 					else if ( $do == "Update" ) {
-						if ( isset( $updateCat ) ) {
-							$updateId 	= mysqli_real_escape_string($db, $upId);
-							$cat_name 	= mysqli_real_escape_string($db, $cat_name);
-							$status 	= mysqli_real_escape_string($db, $status);
+						if ( isset( $_POST['updateCat'] ) ) {
+							$updateId 	= mysqli_real_escape_string($db, $_POST['upId']);
+							$catName 	= mysqli_real_escape_string($db, $_POST['cat_name']);
+							$status 	= mysqli_real_escape_string($db, $_POST['status']);
 
 							// Start: For Slug Making
 							function createSlug( $catName ) {
