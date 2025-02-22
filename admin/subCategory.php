@@ -19,7 +19,7 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<h5 class="mb-0">All Category Lists</h5>
+										<h5 class="mb-0">All Sub Category Lists</h5>
 									</div>
 								</div>
 
@@ -33,6 +33,7 @@
 									      <th scope="col">#Sl</th>
 									      <th scope="col">Name</th>
 									      <th scope="col">Slug</th>
+									      <th scope="col">Category</th>
 									      <th scope="col">Serial</th>
 									      <th scope="col">Status</th>
 									      <th scope="col">Join Date</th>
@@ -41,7 +42,7 @@
 									  </thead>
 									  <tbody>
 									  	<?php  
-									  		$sql = "SELECT * FROM category WHERE status=1 ORDER BY id ASC";
+									  		$sql = "SELECT * FROM subcategory WHERE status=1 ORDER BY id ASC";
 									  		$query = mysqli_query($db, $sql);
 									  		$count = mysqli_num_rows($query);
 
@@ -56,6 +57,7 @@
 										  			$id  		= $row['id'];
 										  			$name  		= $row['name'];
 										  			$slug  		= $row['slug'];
+										  			$cat_id  	= $row['cat_id'];
 										  			$count  	= $row['count'];
 										  			$status  	= $row['status'];
 										  			$join_date  = $row['join_date'];
@@ -65,6 +67,7 @@
 												      <th scope="row"><?php echo $i; ?></th>
 												      <td><?php echo $name; ?></td>
 												      <td><?php echo $slug; ?></td>
+												      <td><?php echo $cat_id; ?></td>
 												      <td><?php echo $count; ?></td>
 												      <td>
 												      	<?php  
@@ -79,12 +82,12 @@
 												      <td><?php echo $join_date; ?></td>
 													  <td>
 													  	<div class="d-flex justify-content-center">
-													  		<a href="category.php?do=Edit&Id=<?php echo $id; ?>" class="btn btn-success btn-sm me-3">Edit</a>
-													  		<a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#trush<?php echo $id; ?>">Trash</a>
+													  		<a href="subCategory.php?do=Edit&Id=<?php echo $id; ?>" class="btn btn-success btn-sm me-3">Edit</a>
+													  		<a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#trash<?php echo $id; ?>">Trash</a>
 													  	</div>
 													  </td>
 													  <!-- Modal Start -->
-													  <div class="modal fade" id="trush<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													  <div class="modal fade" id="trash<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 														  <div class="modal-dialog">
 														    <div class="modal-content">
 														      <div class="modal-header">
@@ -93,7 +96,7 @@
 														      </div>
 														      <div class="modal-body">
 														        <div class="modal-footer justify-content-center">
-																	<a href="category.php?do=Trash&tData=<?php echo $id; ?>" class="btn btn-primary">Yes</a>
+																	<a href="subCategory.php?do=Trash&tData=<?php echo $id; ?>" class="btn btn-primary">Yes</a>
 																	<a href="" class="btn btn-dark" data-bs-dismiss="modal">No</a>		      	
 														        </div>
 														      </div>
