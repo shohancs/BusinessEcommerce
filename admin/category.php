@@ -75,8 +75,9 @@
 												      </td>
 												      <td><?php echo $join_date; ?></td>
 												      <td>
-												      	<div class="d-flex">
-												      		
+												      	<div class="d-flex justify-content-center">
+												      		<a href="category.php?do=Edit&Id=<?php echo $id; ?>" class="btn btn-success btn-sm me-3">Edit</a>
+												      		<a href="" class="btn btn-danger btn-sm">Trash</a>
 												      	</div>
 												      </td>
 												    </tr>
@@ -180,6 +181,109 @@
 							else {
 								die("Mysql Error." . mysqli_error($db));
 							}
+						}
+					}
+
+					else if ( $do == "Edit" ) {
+						if ( isset($_GET['Id']) ) {
+							$editId = $_GET['Id'];
+							$sql = "SELECT * FROM category WHERE id='$editId'";
+							$query = mysqli_query($db, $sql);
+
+							while($row = mysqli_fetch_assoc($query)){
+								$id  		= $row['id'];
+					  			$name  		= $row['name'];
+					  			$slug  		= $row['slug'];
+					  			$status  	= $row['status'];
+					  			$join_date  = $row['join_date'];
+					  			?>
+					  			<!-- Breadcump -->
+								<div class="card radius-10">							
+									<div class="card-body">
+										<div class="d-flex align-items-center">
+											<div>
+												<h5 class="mb-0">Edit Category</h5>
+											</div>
+										</div>
+
+										<hr>
+										<div class="row">
+											<div class="col-lg-6">
+												<div class="card radius-10 mb-0 shadow-none border p-3">
+
+												<!-- Form Start -->
+												<form action="category.php?do=Update" method="POST">
+													<div class="mb-3">
+														<label for="">Category Name</label>
+														<input type="text" name="cat_name" class="form-control" required autocomplete="off" placeholder="enter category name" value="<?php echo $name; ?>">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Status</label>
+														<select class="form-select" name="status">
+															<option value="1">Please select the status</option>
+															<option value="1" <?php if($status == 1){ echo "selected"; } ?>>Active</option>
+															<option value="0" <?php if($status == 0){ echo "selected"; } ?>>InActive</option>
+														</select>
+													</div>
+
+													<div class="mb-3">
+														<div class="d-grid gap-2">
+															<input type="text" name="upId" value="<?php echo $id; ?>">
+															<input type="submit" name="updateCat" class="btn btn-dark" value="Update Category">
+														</div>
+													</div>
+												</form>
+												<!-- Form End -->
+											</div>
+										</div>								
+										</div>
+									</div>
+								</div>
+								<!-- Breadcump -->
+					  			<?php
+							}
+						}
+					}
+
+					else if ( $do == "Update" ) {
+						if ( isset( $updateCat ) ) {
+							$updateId 	= mysqli_real_escape_string($db, $upId);
+							$cat_name 	= mysqli_real_escape_string($db, $cat_name);
+							$status 	= mysqli_real_escape_string($db, $status);
+
+							// Start: For Slug Making
+							function createSlug( $catName ) {
+								// Convert to Lower case
+								$slug = strtolower($catName); 
+
+								// Remove Special Character
+								$slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
+
+								// Replace multiple spaces or hyphens with a single hyphen
+								$slug = preg_replace('/[\s-]+/', ' ', $slug);
+
+								// Replace spaces with hyphens
+								$slug = preg_replace('/\s/', '-', $slug);
+
+								// Trim leading and trailing hyphens
+								$slug = trim($slug, '-');
+
+								return $slug;
+							}
+							$slug = createSlug($catName);
+							// End: For Slug Making
+
+							$sql = "UPDATE category SET name='$catName', slug='$slug', status='$status' WHERE id='$updateId'";
+							$query = mysqli_query($db, $sql);
+
+							if ( $query ) {
+								header("Location: category.php?do=Manage");
+							}
+							else {
+								die("Mysql Error." . mysqli_error($db));
+							}
+
 						}
 					}
 				?>
