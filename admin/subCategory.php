@@ -67,7 +67,20 @@
 												      <th scope="row"><?php echo $i; ?></th>
 												      <td><?php echo $name; ?></td>
 												      <td><?php echo $slug; ?></td>
-												      <td><?php echo $cat_id; ?></td>
+												      <td>
+													     <?php  
+															$sql = "SELECT * FROM category WHERE status=1 AND id='$cat_id' ORDER BY count ASC";
+															$query = mysqli_query($db, $sql);
+
+															while($row = mysqli_fetch_assoc($query)) {
+																$id  		= $row['id'];
+											  					$name  		= $row['name'];
+											  					?>
+											  					<span class="badge text-bg-info"><?php echo $name; ?></span>
+											  					<?php
+															}
+														?>
+													</td>
 												      <td><?php echo $count; ?></td>
 												      <td>
 												      	<?php  
@@ -129,7 +142,7 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<h5 class="mb-0">Add New Category</h5>
+										<h5 class="mb-0">Add New Sub Category <sup>shirt/pant..</sup></h5>
 									</div>
 								</div>
 
@@ -139,14 +152,33 @@
 										<div class="card radius-10 mb-0 shadow-none border p-3">
 
 										<!-- Form Start -->
-										<form action="category.php?do=Store" method="POST">
+										<form action="subCategory.php?do=Store" method="POST">
 											<div class="mb-3">
-												<label for="">Category Name</label>
-												<input type="text" name="cat_name" class="form-control" required autocomplete="off" placeholder="enter category name">
+												<label for="">Sub Category Name</label>
+												<input type="text" name="subname" class="form-control" required autocomplete="off" placeholder="enter sub category name">
 											</div>
 
 											<div class="mb-3">
-												<label for="">Category Number</label>
+												<label for="">Category Name</label>
+												<select class="form-select" name="cat_id">
+													<option value="1">Please select the Category</option>
+													<?php  
+														$sql = "SELECT * FROM category WHERE status=1 ORDER BY count ASC";
+														$query = mysqli_query($db, $sql);
+
+														while($row = mysqli_fetch_assoc($query)) {
+															$id  		= $row['id'];
+										  					$name  		= $row['name'];
+										  					?>
+										  					<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+										  					<?php
+														}
+													?>
+												</select>
+											</div>
+
+											<div class="mb-3">
+												<label for="">Serial</label>
 												<input type="number" name="count" class="form-control" required autocomplete="off" placeholder="enter category number">
 											</div>
 
@@ -161,7 +193,7 @@
 
 											<div class="mb-3">
 												<div class="d-grid gap-2">
-													<input type="submit" name="addCat" class="btn btn-dark" value="Add New Category">
+													<input type="submit" name="addsubCat" class="btn btn-dark" value="Add New Sub Category">
 												</div>
 											</div>
 										</form>
@@ -175,15 +207,16 @@
 					<?php }
 
 					else if ( $do == "Store" ) { 
-						if ( isset($_POST['addCat']) ) {
-							$catName 	= mysqli_real_escape_string($db, $_POST['cat_name']);
+						if ( isset($_POST['addsubCat']) ) {
+							$subname 	= mysqli_real_escape_string($db, $_POST['subname']);
+							$cat_id 	= mysqli_real_escape_string($db, $_POST['cat_id']);
 							$count 		= mysqli_real_escape_string($db, $_POST['count']);
 							$status 	= mysqli_real_escape_string($db, $_POST['status']);
 
 							// Start: For Slug Making
-							function createSlug( $catName ) {
+							function createSlug( $subname ) {
 								// Convert to Lower case
-								$slug = strtolower($catName); 
+								$slug = strtolower($subname); 
 
 								// Remove Special Character
 								$slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
@@ -199,14 +232,14 @@
 
 								return $slug;
 							}
-							$slug = createSlug($catName);
+							$slug = createSlug($subname);
 							// End: For Slug Making
 
-							$sql = "INSERT INTO category (name, slug, count, status, join_date) VALUES('$catName', '$slug', '$count', '$status', now())";
+							$sql = "INSERT INTO subcategory (name, slug, cat_id, count, status, join_date) VALUES('$subname', '$slug', '$cat_id', '$count', '$status', now())";
 							$query = mysqli_query($db, $sql);
 
 							if ( $query ) {
-								header("Location: category.php?do=Manage");
+								header("Location: subCategory.php?do=Manage");
 							}
 							else {
 								die("Mysql Error." . mysqli_error($db));
