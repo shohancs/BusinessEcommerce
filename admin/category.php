@@ -27,7 +27,7 @@
 
 								<!-- Table Start -->
 								<div class="table-responsive">
-									<table class="table table-striped table-hover table-bordered">
+									<table class="table table-striped table-hover table-bordered" id="example">
 									  <thead class="table-dark">
 									    <tr class="text-center">
 									      <th scope="col">#Sl</th>
@@ -336,7 +336,7 @@
 						}
 					}
 
-					if ( $do == "ManageTrash" ) { ?>
+					else if ( $do == "ManageTrash" ) { ?>
 						<!-- Breadcump -->
 						<div class="card radius-10">
 							<div class="card-body">
@@ -350,7 +350,7 @@
 
 								<!-- Table Start -->
 								<div class="table-responsive">
-									<table class="table table-striped table-hover table-bordered">
+									<table class="table table-striped table-hover table-bordered" id="example">
 									  <thead class="table-dark">
 									    <tr class="text-center">
 									      <th scope="col">#Sl</th>
@@ -442,7 +442,6 @@
 						</div>
 						<!-- Breadcump -->
 					<?php }
-
 
 					else if ( $do == "Delete" ) {
 						if ( isset($_GET['dData']) ) {
