@@ -15,126 +15,111 @@
 
 					if ( $do == "Manage" ) { ?>
 						<!-- Breadcump -->
-						<div class="card radius-10">
-							<div class="card-body">
-								<div class="d-flex align-items-center">
-									<div>
-										<h5 class="mb-0">All Sub Category Lists</h5>
-									</div>
-								</div>
+<div class="card radius-10">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div>
+                <h5 class="mb-0">All Sub Category Lists</h5>
+            </div>
+        </div>
 
-								<hr>
+        <hr>
 
-								<!-- Table Start -->
-								<div class="table-responsive">
-									<table class="table table-striped table-hover table-bordered" id="example">
-									  <thead class="table-dark">
-									    <tr class="text-center">
-									      <th scope="col">#Sl</th>
-									      <th scope="col">Name</th>
-									      <th scope="col">Slug</th>
-									      <th scope="col">Category</th>
-									      <th scope="col">Serial</th>
-									      <th scope="col">Status</th>
-									      <th scope="col">Join Date</th>
-									      <th scope="col">Action</th>
-									    </tr>
-									  </thead>
-									  <tbody>
-									  	<?php  
-									  		$sql = "SELECT * FROM subcategory WHERE status=1 ORDER BY id ASC";
-									  		$query = mysqli_query($db, $sql);
-									  		$count = mysqli_num_rows($query);
+        <!-- Table Start -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" id="example">
+                <thead class="table-dark">
+                    <tr class="text-center">
+                        <th scope="col">#Sl</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Slug</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Serial</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Join Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php  
+                        // Use JOIN to fetch category name along with subcategory data
+                        $sql = "SELECT sc.*, c.name AS category_name 
+                                FROM subcategory sc 
+                                JOIN category c ON sc.cat_id = c.id 
+                                WHERE sc.status=1 
+                                ORDER BY sc.id ASC";
+                        $query = mysqli_query($db, $sql);
+                        $count = mysqli_num_rows($query);
 
-									  		if ( $count == 0 ) { ?>
-									  			<div class="alert alert-danger" role="alert">
-												  Sorry! No Data Found.
-												</div>
-									  		<?php }
-									  		else {
-									  			$i = 0;
-									  			while ($row = mysqli_fetch_assoc($query)) {
-										  			$id  		= $row['id'];
-										  			$name  		= $row['name'];
-										  			$slug  		= $row['slug'];
-										  			$cat_id  	= $row['cat_id'];
-										  			$count  	= $row['count'];
-										  			$status  	= $row['status'];
-										  			$join_date  = $row['join_date'];
-										  			$i++;
-										  			?>
-										  			<tr class="text-center">
-												      <th scope="row"><?php echo $i; ?></th>
-												      <td><?php echo $name; ?></td>
-												      <td><?php echo $slug; ?></td>
-												      <td>
-													     <?php  
-															$sql = "SELECT * FROM category WHERE status=1 AND id='$cat_id' ORDER BY count ASC";
-															$query = mysqli_query($db, $sql);
-
-															while($row = mysqli_fetch_assoc($query)) {
-																$id  		= $row['id'];
-											  					$name  		= $row['name'];
-											  					?>
-											  					<span class="badge text-bg-info"><?php echo $name; ?></span>
-											  					<?php
-															}
-														?>
-													</td>
-												      <td><?php echo $count; ?></td>
-												      <td>
-												      	<?php  
-												      		if ( $status == 1 ) { ?>
-												      			<span class="badge text-bg-success">Active</span>
-												      		<?php }
-												      		else if ( $status == 0 ) { ?>
-												      			<span class="badge text-bg-danger">InActive</span>
-												      		<?php }
-												      	?>
-												      </td>
-												      <td><?php echo $join_date; ?></td>
-													  <td>
-													  	<div class="d-flex justify-content-center">
-													  		<a href="subCategory.php?do=Edit&Id=<?php echo $id; ?>" class="btn btn-success btn-sm me-3">Edit</a>
-													  		<a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#trash<?php echo $id; ?>">Trash</a>
-													  	</div>
-													  </td>
-													  <!-- Modal Start -->
-													  <div class="modal fade" id="trash<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-														  <div class="modal-dialog">
-														    <div class="modal-content">
-														      <div class="modal-header">
-														        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure <strong class="text-danger"><?php echo $name; ?></strong>  Move Trash !</h1>
-														        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-														      </div>
-														      <div class="modal-body">
-														        <div class="modal-footer justify-content-center">
-																	<a href="subCategory.php?do=Trash&tData=<?php echo $id; ?>" class="btn btn-primary">Yes</a>
-																	<a href="" class="btn btn-dark" data-bs-dismiss="modal">No</a>		      	
-														        </div>
-														      </div>
-														    </div>
-														  </div>
-														</div>
-													  <!-- Modal End -->
-												    </tr>
-										  			<?php
-										  		}
-
-									  		}
-
-									  		
-									  	?>
-									    
-									  </tbody>
-									</table>
-								</div>
-								<!-- Table End -->
-
-							</div>
-						</div>
-						<!-- Breadcump -->
-					<?php }
+                        if ($count == 0) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                Sorry! No Data Found.
+                            </div>
+                        <?php } else {
+                            $i = 0;
+                            while ($row = mysqli_fetch_assoc($query)) {
+                                $subid      = $row['id'];
+                                $name       = $row['name'];
+                                $slug       = $row['slug'];
+                                $cat_id     = $row['cat_id'];
+                                $count      = $row['count'];
+                                $status     = $row['status'];
+                                $join_date  = $row['join_date'];
+                                $category_name = $row['category_name']; // Fetched from JOIN
+                                $i++;
+                                ?>
+                                <tr class="text-center">
+                                    <th scope="row"><?php echo $i; ?></th>
+                                    <td><?php echo $name; ?></td>
+                                    <td><?php echo $slug; ?></td>
+                                    <td><?php echo $category_name; ?></td> <!-- Display category name -->
+                                    <td><?php echo $count; ?></td>
+                                    <td>
+                                        <?php  
+                                            if ($status == 1) { ?>
+                                                <span class="badge text-bg-success">Active</span>
+                                            <?php } else if ($status == 0) { ?>
+                                                <span class="badge text-bg-danger">InActive</span>
+                                            <?php }
+                                        ?>
+                                    </td>
+                                    <td><?php echo $join_date; ?></td>
+                                    <td>
+                                        <div class="d-flex justify-content-center">
+                                            <a href="subCategory.php?do=Edit&Id=<?php echo $subid; ?>" class="btn btn-success btn-sm me-3">Edit</a>
+                                            <a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#trash<?php echo $subid; ?>">Trash</a>
+                                        </div>
+                                    </td>
+                                    <!-- Modal Start -->
+                                    <div class="modal fade" id="trash<?php echo $subid; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure <strong class="text-danger"><?php echo $name; ?></strong> Move Trash !</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="modal-footer justify-content-center">
+                                                        <a href="subCategory.php?do=Trash&tData=<?php echo $subid; ?>" class="btn btn-primary">Yes</a>
+                                                        <a href="" class="btn btn-dark" data-bs-dismiss="modal">No</a>		      	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal End -->
+                                </tr>
+                                <?php
+                            }
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <!-- Table End -->
+    </div>
+</div>
+<!-- Breadcump -->					<?php }
 
 					else if ( $do == "Add" ) { ?>
 						<!-- Breadcump -->
