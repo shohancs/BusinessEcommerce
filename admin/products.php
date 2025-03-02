@@ -19,7 +19,7 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<h5 class="mb-0">All Sub Category Lists</h5>
+										<h5 class="mb-0">All Products Lists</h5>
 									</div>
 								</div>
 
@@ -33,7 +33,6 @@
 									      <th scope="col">#Sl</th>
 									      <th scope="col">Name</th>
 									      <th scope="col">Slug</th>
-									      <th scope="col">Category</th>
 									      <th scope="col">Serial</th>
 									      <th scope="col">Status</th>
 									      <th scope="col">Join Date</th>
@@ -42,12 +41,7 @@
 									  </thead>
 									  <tbody>
 									  	<?php  
-									  	// subcategory ও category টেবিল একসাথে JOIN করা হয়েছে।
-									  		 $sql = "SELECT sc.*, c.name AS category_name 
-                                FROM subcategory sc 
-                                JOIN category c ON sc.cat_id = c.id 
-                                WHERE sc.status=1 
-                                ORDER BY sc.id ASC";
+									  		$sql = "SELECT * FROM category WHERE status=1 ORDER BY id ASC";
 									  		$query = mysqli_query($db, $sql);
 									  		$count = mysqli_num_rows($query);
 
@@ -59,24 +53,18 @@
 									  		else {
 									  			$i = 0;
 									  			while ($row = mysqli_fetch_assoc($query)) {
-										  			$subid  		= $row['id'];
+										  			$id  		= $row['id'];
 										  			$name  		= $row['name'];
 										  			$slug  		= $row['slug'];
-										  			$cat_id  	= $row['cat_id'];
 										  			$count  	= $row['count'];
 										  			$status  	= $row['status'];
 										  			$join_date  = $row['join_date'];
-										  			$category_name  = $row['category_name'];
 										  			$i++;
 										  			?>
 										  			<tr class="text-center">
 												      <th scope="row"><?php echo $i; ?></th>
 												      <td><?php echo $name; ?></td>
 												      <td><?php echo $slug; ?></td>
-												      <td>
-												      	<?php echo $category_name; ?>
-													     
-													  </td>
 												      <td><?php echo $count; ?></td>
 												      <td>
 												      	<?php  
@@ -91,12 +79,12 @@
 												      <td><?php echo $join_date; ?></td>
 													  <td>
 													  	<div class="d-flex justify-content-center">
-													  		<a href="subCategory.php?do=Edit&Id=<?php echo $id; ?>" class="btn btn-success btn-sm me-3">Edit</a>
-													  		<a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#trash<?php echo $id; ?>">Trash</a>
+													  		<a href="category.php?do=Edit&Id=<?php echo $id; ?>" class="btn btn-success btn-sm me-3">Edit</a>
+													  		<a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#trush<?php echo $id; ?>">Trash</a>
 													  	</div>
 													  </td>
 													  <!-- Modal Start -->
-													  <div class="modal fade" id="trash<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													  <div class="modal fade" id="trush<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 														  <div class="modal-dialog">
 														    <div class="modal-content">
 														      <div class="modal-header">
@@ -105,7 +93,7 @@
 														      </div>
 														      <div class="modal-body">
 														        <div class="modal-footer justify-content-center">
-																	<a href="subCategory.php?do=Trash&tData=<?php echo $id; ?>" class="btn btn-primary">Yes</a>
+																	<a href="category.php?do=Trash&tData=<?php echo $id; ?>" class="btn btn-primary">Yes</a>
 																	<a href="" class="btn btn-dark" data-bs-dismiss="modal">No</a>		      	
 														        </div>
 														      </div>
@@ -138,60 +126,168 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<h5 class="mb-0">Add New Sub Category <sup>shirt/pant..</sup></h5>
+										<h5 class="mb-0">Add New Category</h5>
 									</div>
 								</div>
 
 								<hr>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-12">
 										<div class="card radius-10 mb-0 shadow-none border p-3">
 
 										<!-- Form Start -->
-										<form action="subCategory.php?do=Store" method="POST">
-											<div class="mb-3">
-												<label for="">Sub Category Name</label>
-												<input type="text" name="subname" class="form-control" required autocomplete="off" placeholder="enter sub category name">
-											</div>
+										<form action="category.php?do=Store" method="POST" enctype="multipart/form-data">
+											<div class="row">
+												<div class="col-6">
+													<div class="mb-3">
+														<label for="">Category Name</label>
+														<select class="form-select" name="cat_id">
+															<option value="1">Please select the Category</option>
+															<?php  
+																$sql = "SELECT * FROM category WHERE status=1 ORDER BY count ASC";
+																$query = mysqli_query($db, $sql);
 
-											<div class="mb-3">
-												<label for="">Category Name</label>
-												<select class="form-select" name="cat_id">
-													<option value="1">Please select the Category</option>
-													<?php  
-														$sql = "SELECT * FROM category WHERE status=1 ORDER BY count ASC";
-														$query = mysqli_query($db, $sql);
+																while($row = mysqli_fetch_assoc($query)) {
+																	$id  		= $row['id'];
+												  					$name  		= $row['name'];
+												  					?>
+												  					<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+												  					<?php
+																}
+															?>
+														</select>
+													</div>
 
-														while($row = mysqli_fetch_assoc($query)) {
-															$id  		= $row['id'];
-										  					$name  		= $row['name'];
-										  					?>
-										  					<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-										  					<?php
-														}
-													?>
-												</select>
-											</div>
+													<div class="mb-3">
+														<label for="">Sub Category Name</label>
+														<select class="form-select" name="cat_id">
+															<option value="1">Please select the Sub Category</option>
+															<?php  
+																$sql = "SELECT * FROM subcategory WHERE status=1 ORDER BY count ASC";
+																$query = mysqli_query($db, $sql);
 
-											<div class="mb-3">
-												<label for="">Serial</label>
-												<input type="number" name="count" class="form-control" required autocomplete="off" placeholder="enter category number">
-											</div>
+																while($row = mysqli_fetch_assoc($query)) {
+																	$id  		= $row['id'];
+												  					$name  		= $row['name'];
+												  					?>
+												  					<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+												  					<?php
+																}
+															?>
+														</select>
+													</div>
+													<div class="mb-3">
+														<label for="">Product Name</label>
+														<input type="text" name="prd_name" class="form-control" required autocomplete="off" placeholder="enter category name">
+													</div>
 
-											<div class="mb-3">
-												<label for="">Status</label>
-												<select class="form-select" name="status">
-													<option value="1">Please select the status</option>
-													<option value="1">Active</option>
-													<option value="0">InActive</option>
-												</select>
-											</div>
+													<div class="mb-3">
+														<label for="">Product Code</label>
+														<input type="text" name="prd_name" class="form-control" required autocomplete="off" placeholder="enter category name">
+													</div>
 
-											<div class="mb-3">
-												<div class="d-grid gap-2">
-													<input type="submit" name="addsubCat" class="btn btn-dark" value="Add New Sub Category">
+													<div class="mb-3">
+														<label for="">Brand</label>
+														<input type="text" name="brand" class="form-control" required autocomplete="off" placeholder="enter Brand name">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Quantity</label>
+														<input type="number" name="quantiry" class="form-control" required autocomplete="off" placeholder="products quantity">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Regualar Price</label>
+														<input type="text" name="rprice" class="form-control" required autocomplete="off" placeholder="enter regular price">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Discount Price</label>
+														<input type="text" name="dprice" class="form-control" required autocomplete="off" placeholder="enter discount price">
+													</div>
+
+													
+
+													
+
+													<div class="mb-3">
+														<label for="">Season</label>
+														<input type="text" name="season" class="form-control" required autocomplete="off" placeholder="enter season name">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Size</label>
+														<input type="number" name="size" class="form-control" required autocomplete="off" placeholder="enter size">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Color</label>
+														<input type="text" name="size" class="form-control" required autocomplete="off" placeholder="enter color">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Material</label>
+														<input type="text" name="material" class="form-control" required autocomplete="off" placeholder="enter dress material">
+													</div>
+
+
+												</div>
+												<div class="col-6">
+
+													<div class="mb-3">
+														<label for="">Product Details</label>
+														<textarea name="prd_details" cols="30" rows="2" class="form-control" placeholder="details"></textarea>
+													</div>
+
+													<div class="mb-3">
+														<label for="">Image 1</label>
+														<input type="file" name="img1" class="form-control">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Image 2</label>
+														<input type="file" name="img2" class="form-control">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Image 3</label>
+														<input type="file" name="img3" class="form-control">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Image 4</label>
+														<input type="file" name="img4" class="form-control">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Image 5</label>
+														<input type="file" name="img5" class="form-control">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Size Chart Imaage</label>
+														<input type="file" name="chart" class="form-control">
+													</div>
+
+													<div class="mb-3">
+														<label for="">Status</label>
+														<select class="form-select" name="status">
+															<option value="1">Please select the status</option>
+															<option value="1">Active</option>
+															<option value="0">InActive</option>
+														</select>
+													</div>
+
+													<div class="mb-3">
+														<div class="d-grid gap-2">
+															<input type="submit" name="addCat" class="btn btn-dark" value="Add New Product">
+														</div>
+													</div>
 												</div>
 											</div>
+											
+
+											
 										</form>
 										<!-- Form End -->
 									</div>
@@ -203,16 +299,15 @@
 					<?php }
 
 					else if ( $do == "Store" ) { 
-						if ( isset($_POST['addsubCat']) ) {
-							$subname 	= mysqli_real_escape_string($db, $_POST['subname']);
-							$cat_id 	= mysqli_real_escape_string($db, $_POST['cat_id']);
+						if ( isset($_POST['addCat']) ) {
+							$catName 	= mysqli_real_escape_string($db, $_POST['cat_name']);
 							$count 		= mysqli_real_escape_string($db, $_POST['count']);
 							$status 	= mysqli_real_escape_string($db, $_POST['status']);
 
 							// Start: For Slug Making
-							function createSlug( $subname ) {
+							function createSlug( $catName ) {
 								// Convert to Lower case
-								$slug = strtolower($subname); 
+								$slug = strtolower($catName); 
 
 								// Remove Special Character
 								$slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
@@ -228,14 +323,14 @@
 
 								return $slug;
 							}
-							$slug = createSlug($subname);
+							$slug = createSlug($catName);
 							// End: For Slug Making
 
-							$sql = "INSERT INTO subcategory (name, slug, cat_id, count, status, join_date) VALUES('$subname', '$slug', '$cat_id', '$count', '$status', now())";
+							$sql = "INSERT INTO category (name, slug, count, status, join_date) VALUES('$catName', '$slug', '$count', '$status', now())";
 							$query = mysqli_query($db, $sql);
 
 							if ( $query ) {
-								header("Location: subCategory.php?do=Manage");
+								header("Location: category.php?do=Manage");
 							}
 							else {
 								die("Mysql Error." . mysqli_error($db));

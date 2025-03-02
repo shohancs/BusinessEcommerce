@@ -77,10 +77,10 @@
 						<div class="menu-title">Products</div>
 					</a>
 					<ul>
-						<li> <a href="subCategory.php?do=Manage"><i class="bx bx-right-arrow-alt"></i>All Sub Category</a>
-						<li> <a href="subCategory.php?do=Add"><i class="bx bx-right-arrow-alt"></i>Add</a>
+						<li> <a href="products.php?do=Manage"><i class="bx bx-right-arrow-alt"></i>All Products</a>
+						<li> <a href="products.php?do=Add"><i class="bx bx-right-arrow-alt"></i>Add</a>
 						</li>
-						<li> <a href="subCategory.php?do=ManageTrash"><i class="bx bx-right-arrow-alt"></i>Trash</a>
+						<li> <a href="products.php?do=ManageTrash"><i class="bx bx-right-arrow-alt"></i>Trash</a>
 						</li>
 					</ul>
 				</li>
