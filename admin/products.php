@@ -31,10 +31,16 @@
 									  <thead class="table-dark">
 									    <tr class="text-center">
 									      <th scope="col">#Sl</th>
-									      <th scope="col">Name</th>
-									      <th scope="col">Slug</th>
-									      <th scope="col">Serial</th>
-									      <th scope="col">Status</th>
+									      <th scope="col">Prd_Code</th>
+									      <th scope="col">Prd_Name</th>
+									      <th scope="col">Category</th>
+									      <th scope="col">Sub Category</th>
+									      <th scope="col">Brand</th>
+									      <th scope="col">Season</th>
+									      <th scope="col">Quantity</th>
+									      <th scope="col">Discount %</th>
+									      <th scope="col">Reg_Price</th>
+									      <th scope="col">Dis_Price</th>
 									      <th scope="col">Join Date</th>
 									      <th scope="col">Action</th>
 									    </tr>
@@ -126,7 +132,7 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<h5 class="mb-0">Add New Category</h5>
+										<h5 class="mb-0">Add New Product</h5>
 									</div>
 								</div>
 
@@ -136,7 +142,7 @@
 										<div class="card radius-10 mb-0 shadow-none border p-3">
 
 										<!-- Form Start -->
-										<form action="category.php?do=Store" method="POST" enctype="multipart/form-data">
+										<form action="products.php?do=Store" method="POST" enctype="multipart/form-data">
 											<div class="row">
 												<div class="col-6">
 													<div class="mb-3">
@@ -160,7 +166,7 @@
 
 													<div class="mb-3">
 														<label for="">Sub Category Name</label>
-														<select class="form-select" name="cat_id">
+														<select class="form-select" name="sub_id">
 															<option value="1">Please select the Sub Category</option>
 															<?php  
 																$sql = "SELECT * FROM subcategory WHERE status=1 ORDER BY count ASC";
@@ -178,12 +184,12 @@
 													</div>
 													<div class="mb-3">
 														<label for="">Product Name</label>
-														<input type="text" name="prd_name" class="form-control" required autocomplete="off" placeholder="enter category name">
+														<input type="text" name="prd_name" class="form-control" required autocomplete="off" placeholder="enter product name">
 													</div>
 
 													<div class="mb-3">
 														<label for="">Product Code</label>
-														<input type="text" name="prd_name" class="form-control" required autocomplete="off" placeholder="enter category name">
+														<input type="text" name="prd_code" class="form-control" required autocomplete="off" placeholder="enter product code">
 													</div>
 
 													<div class="mb-3">
@@ -193,20 +199,23 @@
 
 													<div class="mb-3">
 														<label for="">Quantity</label>
-														<input type="number" name="quantiry" class="form-control" required autocomplete="off" placeholder="products quantity">
+														<input type="number" name="quantity" class="form-control" required autocomplete="off" placeholder="products quantity">
 													</div>
 
 													<div class="mb-3">
 														<label for="">Regualar Price</label>
-														<input type="text" name="rprice" class="form-control" required autocomplete="off" placeholder="enter regular price">
+														<input type="number" name="rprice" class="form-control" required autocomplete="off" placeholder="enter regular price">
 													</div>
 
 													<div class="mb-3">
 														<label for="">Discount Price</label>
-														<input type="text" name="dprice" class="form-control" required autocomplete="off" placeholder="enter discount price">
+														<input type="number" name="dprice" class="form-control" required autocomplete="off" placeholder="enter discount price">
 													</div>
 
-													
+													<div class="mb-3">
+														<label for="">Discount Percent</label>
+														<input type="text" name="dis_percent" class="form-control" required autocomplete="off" placeholder="enter discount %">
+													</div>										
 
 													
 
@@ -217,12 +226,12 @@
 
 													<div class="mb-3">
 														<label for="">Size</label>
-														<input type="number" name="size" class="form-control" required autocomplete="off" placeholder="enter size">
+														<input type="text" name="size" class="form-control" required autocomplete="off" placeholder="enter size">
 													</div>
 
 													<div class="mb-3">
 														<label for="">Color</label>
-														<input type="text" name="size" class="form-control" required autocomplete="off" placeholder="enter color">
+														<input type="text" name="color" class="form-control" required autocomplete="off" placeholder="enter color">
 													</div>
 
 													<div class="mb-3">
@@ -280,7 +289,7 @@
 
 													<div class="mb-3">
 														<div class="d-grid gap-2">
-															<input type="submit" name="addCat" class="btn btn-dark" value="Add New Product">
+															<input type="submit" name="addPrd" class="btn btn-dark" value="Add New Product">
 														</div>
 													</div>
 												</div>
@@ -299,15 +308,101 @@
 					<?php }
 
 					else if ( $do == "Store" ) { 
-						if ( isset($_POST['addCat']) ) {
-							$catName 	= mysqli_real_escape_string($db, $_POST['cat_name']);
-							$count 		= mysqli_real_escape_string($db, $_POST['count']);
-							$status 	= mysqli_real_escape_string($db, $_POST['status']);
+						if ( isset($_POST['addPrd']) ) {
+							$cat_id 	  	= mysqli_real_escape_string($db, $_POST['cat_id']);
+							$sub_id 	  	= mysqli_real_escape_string($db, $_POST['sub_id']);
+							$prd_name 	  	= mysqli_real_escape_string($db, $_POST['prd_name']);
+							$prd_code 	  	= mysqli_real_escape_string($db, $_POST['prd_code']);
+							$brand 		  	= mysqli_real_escape_string($db, $_POST['brand']);
+							$quantity 	  	= mysqli_real_escape_string($db, $_POST['quantity']);
+							$rprice 	  	= mysqli_real_escape_string($db, $_POST['rprice']);
+							$dprice 	  	= mysqli_real_escape_string($db, $_POST['dprice']);
+							$dis_percent 	= mysqli_real_escape_string($db, $_POST['dis_percent']);
+							$season 	  	= mysqli_real_escape_string($db, $_POST['season']);
+							$size 		  	= mysqli_real_escape_string($db, $_POST['size']);
+							$color 		  	= mysqli_real_escape_string($db, $_POST['color']);
+							$material 	  	= mysqli_real_escape_string($db, $_POST['material']);
+							$prd_details  	= mysqli_real_escape_string($db, $_POST['prd_details']);
+							$status 	  	= mysqli_real_escape_string($db, $_POST['status']);
+
+
+							// Image 1
+							$img_one 		= mysqli_real_escape_string($db, $_FILES['img1']['name']);
+							$tmpImgOne 		= $_FILES['img1']['tmp_name'];
+
+							if ( !empty($img_one) ) {
+								$img1 = rand(0, 999999) . "_" . $img_one;
+								move_uploaded_file($tmpImgOne, 'assets/images/products/' . $img1);
+							}
+							else {
+								$img1 = "";
+							}
+
+							// Image 2
+							$img_two 		= mysqli_real_escape_string($db, $_FILES['img2']['name']);
+							$tmpImgTwo 		= $_FILES['img2']['tmp_name'];
+
+							if ( !empty($img_two) ) {
+								$img2 = rand(0, 999999) . "_" . $img_two;
+								move_uploaded_file($tmpImgTwo, 'assets/images/products/' . $img2);
+							}
+							else {
+								$img2 = "";
+							}
+
+							// Image 3
+							$img_three 		= mysqli_real_escape_string($db, $_FILES['img3']['name']);
+							$tmpImgThree 	= $_FILES['img3']['tmp_name'];
+
+							if ( !empty($img_three) ) {
+								$img3 = rand(0, 999999) . "_" . $img_three;
+								move_uploaded_file($tmpImgThree, 'assets/images/products/' . $img3);
+							}
+							else {
+								$img3 = "";
+							}
+
+							// Image 4
+							$img_four 		= mysqli_real_escape_string($db, $_FILES['img4']['name']);
+							$tmpImgFour 	= $_FILES['img4']['tmp_name'];
+
+							if ( !empty( $img_four ) ) {
+								$img4 = rand( 0, 999999 ) . "_" . $img_four;
+								move_uploaded_file($tmpImgFour, 'assets/images/products/' . $img4);
+							}
+							else {
+								$img4 = "";
+							}
+
+							// Image 5
+							$img_five 		= mysqli_real_escape_string($db, $_FILES['img5']['name']);
+							$tmpImgFive 	= $_FILES['img5']['tmp_name'];
+
+							if ( !empty($img_five) ) {
+								$img5 = rand( 0, 9999999 ) . "_" . $img_five;
+								move_uploaded_file($tmpImgFive, 'assets/images/products/' . $img5);
+							}
+							else {
+								$img5 = "";
+							}
+
+							// Chart Image
+							$chart_Img 		= mysqli_real_escape_string($db, $_FILES['chart']['name']);
+							$tmpImgChart    = $_FILES['chart']['tmp_name'];
+
+							if ( !empty($chart_Img) ) {
+								$chart = rand(0, 999999) . "_" . $chart_Img;
+								move_uploaded_file($tmpImgChart, 'assets/images/products/' . $chart);
+							}
+							else {
+								$chart = "";
+							}
+							
 
 							// Start: For Slug Making
-							function createSlug( $catName ) {
+							function createSlug( $prd_name ) {
 								// Convert to Lower case
-								$slug = strtolower($catName); 
+								$slug = strtolower($prd_name); 
 
 								// Remove Special Character
 								$slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
@@ -323,14 +418,14 @@
 
 								return $slug;
 							}
-							$slug = createSlug($catName);
+							$slug = createSlug($prd_name);
 							// End: For Slug Making
 
-							$sql = "INSERT INTO category (name, slug, count, status, join_date) VALUES('$catName', '$slug', '$count', '$status', now())";
+							$sql = "INSERT INTO products (prd_code, name, slug, prd_details, price, dsc_price, dis_percent, quantity, cat_id, subcat_id, season, size, color, material, brand, img1, img2, img3, img4, img5, char_img, status, join_date ) VALUES('$prd_code', '$prd_name', '$slug', '$prd_details', '$rprice', '$dprice', '$dis_percent', '$quantity', '$cat_id', '$sub_id', '$season', '$size', '$color', '$material', '$brand', '$img1', '$img2', '$img3', '$img4', '$img5', '$chart', '$status', now() )";
 							$query = mysqli_query($db, $sql);
 
 							if ( $query ) {
-								header("Location: category.php?do=Manage");
+								header("Location: products.php?do=Manage");
 							}
 							else {
 								die("Mysql Error." . mysqli_error($db));
