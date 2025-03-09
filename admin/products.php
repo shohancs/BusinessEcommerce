@@ -41,13 +41,18 @@
 									      <th scope="col">Discount %</th>
 									      <th scope="col">Reg_Price</th>
 									      <th scope="col">Dis_Price</th>
+									      <th scope="col">Status</th>
 									      <th scope="col">Join Date</th>
 									      <th scope="col">Action</th>
 									    </tr>
 									  </thead>
 									  <tbody>
 									  	<?php  
-									  		$sql = "SELECT * FROM category WHERE status=1 ORDER BY id ASC";
+									  		$sql = "SELECT p.*, c.name AS category_name, sc.name AS subcategory_name 
+	        FROM products p
+	        JOIN category c ON p.cat_id = c.id 
+	        JOIN subcategory sc ON p.subcat_id = sc.id
+	        WHERE p.status=1 ORDER BY p.id DESC";
 									  		$query = mysqli_query($db, $sql);
 									  		$count = mysqli_num_rows($query);
 
@@ -59,19 +64,38 @@
 									  		else {
 									  			$i = 0;
 									  			while ($row = mysqli_fetch_assoc($query)) {
-										  			$id  		= $row['id'];
-										  			$name  		= $row['name'];
-										  			$slug  		= $row['slug'];
-										  			$count  	= $row['count'];
-										  			$status  	= $row['status'];
-										  			$join_date  = $row['join_date'];
+										  			$id  			= $row['id'];
+										  			$prd_code  		= $row['prd_code'];
+										  			$name  			= $row['name'];
+										  			$price  		= $row['price'];
+										  			$dsc_price  	= $row['dsc_price'];
+										  			$dis_percent  	= $row['dis_percent'];
+										  			$quantity  		= $row['quantity'];
+										  			$cat_id  		= $row['cat_id'];
+										  			$subcat_id  	= $row['subcat_id'];
+										  			$season  		= $row['season'];
+										  			$brand  		= $row['brand'];
+										  			$status  		= $row['status'];
+										  			$join_date  	= $row['join_date'];
+										  			$category_name  = $row['category_name']; // Category Name
+													$subcategory_name = $row['subcategory_name']; // Subcategory Name
 										  			$i++;
 										  			?>
 										  			<tr class="text-center">
 												      <th scope="row"><?php echo $i; ?></th>
-												      <td><?php echo $name; ?></td>
-												      <td><?php echo $slug; ?></td>
-												      <td><?php echo $count; ?></td>
+												      <td><?php echo $prd_code; ?></td>
+												      <td><?php echo $name; ?></td>							
+												      <td>
+												      	<?php echo $category_name; ?>
+												      		
+												      </td>
+												      <td><?php echo $subcategory_name; ?></td>
+												      <td><?php echo $brand; ?></td>
+												      <td><?php echo $season; ?></td>
+												      <td><?php echo $quantity; ?></td>
+												      <td><?php echo $dis_percent; ?></td>
+												      <td><?php echo $price; ?></td>
+												      <td><?php echo $dsc_price; ?></td>	
 												      <td>
 												      	<?php  
 												      		if ( $status == 1 ) { ?>
