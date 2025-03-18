@@ -32,6 +32,7 @@
 									    <tr class="text-center">
 									      <th scope="col">#Sl</th>
 									      <th scope="col">Name</th>
+									      <th scope="col">Profile</th>
 									      <th scope="col">Slug</th>
 									      <th scope="col">Category</th>
 									      <th scope="col">Serial</th>
@@ -48,6 +49,7 @@
                                 JOIN category c ON sc.cat_id = c.id 
                                 WHERE sc.status=1 
                                 ORDER BY sc.id ASC";
+									  	// $sql = "SELECT * FROM subcategory WHERE status=1";
 									  		$query = mysqli_query($db, $sql);
 									  		$count = mysqli_num_rows($query);
 
@@ -64,6 +66,7 @@
 										  			$slug  		= $row['slug'];
 										  			$cat_id  	= $row['cat_id'];
 										  			$count  	= $row['count'];
+										  			$prf_img  	= $row['prf_img'];
 										  			$status  	= $row['status'];
 										  			$join_date  = $row['join_date'];
 										  			$category_name  = $row['category_name'];
@@ -71,6 +74,16 @@
 										  			?>
 										  			<tr class="text-center">
 												      <th scope="row"><?php echo $i; ?></th>
+												      <td class="text-center">
+												      	<?php 
+												      		if ( !empty( $prf_img ) ) {
+																echo '<img src="assets/images/sub_images/' . $prf_img . '" alt="" style="width: 60px;">';
+												      		}
+												      		else { 
+																echo 'No IMG';
+												      		}
+												      	?>
+												      	</td>
 												      <td><?php echo $name; ?></td>
 												      <td><?php echo $slug; ?></td>
 												      <td>
@@ -148,7 +161,7 @@
 										<div class="card radius-10 mb-0 shadow-none border p-3">
 
 										<!-- Form Start -->
-										<form action="subCategory.php?do=Store" method="POST">
+										<form action="subCategory.php?do=Store" method="POST" enctype="multipart/form-data">
 											<div class="mb-3">
 												<label for="">Sub Category Name</label>
 												<input type="text" name="subname" class="form-control" required autocomplete="off" placeholder="enter sub category name">
@@ -176,6 +189,11 @@
 											<div class="mb-3">
 												<label for="">Serial</label>
 												<input type="number" name="count" class="form-control" required autocomplete="off" placeholder="enter category number">
+											</div>
+
+											<div class="mb-3">
+												<label for="">Profile Image</label>
+												<input type="file" name="prf_img" class="form-control">
 											</div>
 
 											<div class="mb-3">
@@ -208,6 +226,16 @@
 							$cat_id 	= mysqli_real_escape_string($db, $_POST['cat_id']);
 							$count 		= mysqli_real_escape_string($db, $_POST['count']);
 							$status 	= mysqli_real_escape_string($db, $_POST['status']);
+							$prf_img 	= $_FILES['prf_img']['name'];
+							$tmpimg 	= $_FILES['prf_img']['tmp_name'];
+
+							if ( !empty($prf_img) ) {
+								$img1 = rand(0, 999999) . "_" . $prf_img;
+								move_uploaded_file($tmpimg, 'assets/images/sub_images/' . $img1);
+							}
+							else {
+								$img1 = "";
+							}
 
 							// Start: For Slug Making
 							function createSlug( $subname ) {
@@ -231,7 +259,7 @@
 							$slug = createSlug($subname);
 							// End: For Slug Making
 
-							$sql = "INSERT INTO subcategory (name, slug, cat_id, count, status, join_date) VALUES('$subname', '$slug', '$cat_id', '$count', '$status', now())";
+							$sql = "INSERT INTO subcategory (name, slug, cat_id, count, prf_img, status, join_date) VALUES('$subname', '$slug', '$cat_id', '$count', '$img1', '$status', now())";
 							$query = mysqli_query($db, $sql);
 
 							if ( $query ) {

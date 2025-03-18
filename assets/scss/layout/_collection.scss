@@ -1,0 +1,92 @@
+/*=====================
+    Collection CSS 
+==========================*/
+.nft-collection-section {
+    background-color: #1b1c21;
+    overflow: hidden;
+    padding: calc(40px + (110 - 40) * ((100vw - 320px) / (1920 - 320))) 0;
+
+    .title2 {
+        .title-inner2 {
+            color: $white;
+        }
+    }
+    .nft-collection-box {
+        border-radius: 15px;
+        background-color: #262935;
+        padding: 10px;
+        position: relative;
+        [dir="rtl"] & {
+            direction: rtl;
+        }
+        .collection-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 6px;
+            img {
+                width: 50px;
+                height: 50px;
+                border-radius: 100%;
+            }
+            h4 {
+                margin-bottom: 2px;
+                color: $white;
+            }
+            h5 {
+                margin-bottom: 0;
+                color: rgba($white, 0.8);
+            }
+            .wishlist-icon {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                position: absolute;
+                right: 30px;
+                top: 12px;
+                color: $white;
+                svg {
+                    width: 20px;
+                    color: $white;
+                }
+            }
+        }
+        .collection-img {
+            img {
+                height: 100%;
+                object-fit: cover;
+                border-radius: 15px;
+            }
+            .custom-grid {
+                display: grid;
+                gap: 0;
+                padding: 0;
+                grid-template-columns: 50% 50%;
+                > div {
+                    padding: 5px;
+                    .collection-bg-img {
+                        border-radius: 10px;
+                    }
+                    &:first-child {
+                        grid-column: 1 / 2;
+                        grid-row: 1 / 3;
+                        .collection-bg-img {
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+
+        @media (max-width: 767px) {
+            .custom-grid > div:first-child {
+                grid-column: 1 / 4;
+            }
+
+            .custom-grid > div:nth-child(3),
+            .custom-grid > div:nth-child(5) {
+                grid-column: 2 / 4;
+            }
+        }
+    }
+}

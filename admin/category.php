@@ -31,6 +31,7 @@
 									  <thead class="table-dark">
 									    <tr class="text-center">
 									      <th scope="col">#Sl</th>
+									      <th scope="col">Profile</th>
 									      <th scope="col">Name</th>
 									      <th scope="col">Slug</th>
 									      <th scope="col">Serial</th>
@@ -57,12 +58,23 @@
 										  			$name  		= $row['name'];
 										  			$slug  		= $row['slug'];
 										  			$count  	= $row['count'];
+										  			$prf_img  	= $row['prf_img'];
 										  			$status  	= $row['status'];
 										  			$join_date  = $row['join_date'];
 										  			$i++;
 										  			?>
 										  			<tr class="text-center">
 												      <th scope="row"><?php echo $i; ?></th>
+												      <td class="text-center">
+												      	<?php 
+												      		if ( !empty( $prf_img ) ) {
+																echo '<img src="assets/images/sub_images/' . $prf_img . '" alt="" style="width: 60px;">';
+												      		}
+												      		else { 
+																echo 'No IMG';
+												      		}
+												      	?>
+												      	</td>
 												      <td><?php echo $name; ?></td>
 												      <td><?php echo $slug; ?></td>
 												      <td><?php echo $count; ?></td>
@@ -136,7 +148,7 @@
 										<div class="card radius-10 mb-0 shadow-none border p-3">
 
 										<!-- Form Start -->
-										<form action="category.php?do=Store" method="POST">
+										<form action="category.php?do=Store" method="POST" enctype="multipart/form-data">
 											<div class="mb-3">
 												<label for="">Category Name</label>
 												<input type="text" name="cat_name" class="form-control" required autocomplete="off" placeholder="enter category name">
@@ -145,6 +157,11 @@
 											<div class="mb-3">
 												<label for="">Category Number</label>
 												<input type="number" name="count" class="form-control" required autocomplete="off" placeholder="enter category number">
+											</div>
+
+											<div class="mb-3">
+												<label for="">Category Image</label>
+												<input type="file" name="prf_img" class="form-control">
 											</div>
 
 											<div class="mb-3">
@@ -177,6 +194,18 @@
 							$count 		= mysqli_real_escape_string($db, $_POST['count']);
 							$status 	= mysqli_real_escape_string($db, $_POST['status']);
 
+							$prf_img 	= $_FILES['prf_img']['name'];
+							$tmpimg 	= $_FILES['prf_img']['tmp_name'];
+
+							if ( !empty($prf_img) ) {
+								$img1 = rand(0, 999999) . "_" . $prf_img;
+								move_uploaded_file($tmpimg, 'assets/images/sub_images/' . $img1);
+							}
+							else {
+								$img1 = "";
+							}
+
+
 							// Start: For Slug Making
 							function createSlug( $catName ) {
 								// Convert to Lower case
@@ -199,7 +228,7 @@
 							$slug = createSlug($catName);
 							// End: For Slug Making
 
-							$sql = "INSERT INTO category (name, slug, count, status, join_date) VALUES('$catName', '$slug', '$count', '$status', now())";
+							$sql = "INSERT INTO category (name, slug, count,  prf_img, status, join_date) VALUES('$catName', '$slug', '$count', '$img1', '$status', now())";
 							$query = mysqli_query($db, $sql);
 
 							if ( $query ) {
