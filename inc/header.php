@@ -40,6 +40,9 @@
     <!-- Bootstrap css -->
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
 
+    <!-- Font Awesome code -->
+    <script src="https://kit.fontawesome.com/0c66e46c25.js" crossorigin="anonymous"></script>
+
     <!-- Theme css -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
