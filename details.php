@@ -170,28 +170,22 @@
                                             <ul>
                                                 <li>
                                                     <img src="assets/images/fire.gif" class="img-fluid" alt="image">
-                                                    <span class="p-counter">37</span>
-                                                    <span class="lang">orders in last 24 hours</span>
+                                                    <span class="lang">Super Fast Service</span>
                                                 </li>
                                                 <li>
                                                     <img src="assets/images/person.gif" class="img-fluid user_img" alt="image">
-                                                    <span class="p-counter">44</span>
-                                                    <span class="lang">active view this</span>
+                                                    <span class="lang">Active Items</span>
                                                 </li>
                                             </ul>
                                         </div>
-                                        <h2>Women Pink Shirt</h2>
-                                        <div class="rating-section">
-                                            <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-                                                    class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                                            </div>
-                                            <h6>120 ratings</h6>
-                                        </div>
+                                        <h2><?php echo $name; ?></h2>
+                                        <p class="pb-2 text-dark">Product Code: <?php echo $prd_code; ?></p>
+                                        
                                         <div class="label-section">
-                                            <span class="badge badge-grey-color">#1 Best seller</span>
+                                            <span class="badge badge-grey-color">#Best seller</span>
                                             <span class="label-text">in fashion</span>
                                         </div>
-                                        <h3 class="price-detail">$32.96 <del>$459.00</del><span>55% off</span></h3>
+                                        <h3 class="price-detail">BDT <?php echo $dsc_price; ?> <del>৳ <?php echo $dsc_price; ?></del><span><?php echo $dis_percent; ?>% off</span></h3>
                                         <ul class="color-variant">
                                             <li class="bg-light0 active"></li>
                                             <li class="bg-light1"></li>

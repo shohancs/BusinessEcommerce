@@ -120,7 +120,6 @@
                 <?php
             }
         ?>
-
                 
     </div>
     <!-- side-bar banner end here -->
